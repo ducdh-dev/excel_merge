@@ -15,7 +15,7 @@ validFiles = ""
 validCnt = 0
 errCnt = 0
 
-for root, subdirs, files in os.walk(os.curdir):
+for root, subdirs, files in os.walk(os.path.join(os.curdir, 'files')):
     for f in files:
         if f.endswith('.xlsx') and not (f == "master_table.xlsx" or f == "~$master_table.xlsx"):
             try:
@@ -46,7 +46,7 @@ log_file.write(logMsg)
 log_file.close()
 
 # Load all .xlsx to dataframes and concatenate into master dataframe
-dataframes = [pd.read_excel(t) for t in targetF]
+dataframes = [pd.read_excel(t, skiprows=15) for t in targetF]
 df_master = pd.concat(dataframes)
 
 # Exports a consolidated excel file 
