@@ -22,3 +22,9 @@ It is possible to include codes to transform and aggregate the data further with
 #### Note
 * A windows `merge.bat` file is included to facilitate running of the script. Ensure that `Python` and the libraries are added to the environment path for it to work.
 * This method bypasses the locked single-instance of MS Office applications, allowing for data to be grabbed even when files are opened
+
+## Command
+```
+pip install -r .\requirements.txt
+pyinstaller --onefile .\master_merge.py
+```

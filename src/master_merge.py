@@ -4,9 +4,14 @@ import pandas as pd
 import os
 import os.path
 import datetime as dt
+import argparse
 
 # Print output to be displayed in terminal
+print("***** ===== Copyright belongs to ducdh-dev ===== *****")
 print("\nBegin merge script.\nScanning for files.\n\nImporting files:")
+
+skiprows_input = input("Bạn muốn bỏ qua số dòng là (default=8): ")
+skiprows = int(skiprows_input) if skiprows_input else 8
 
 # Get all .xlsx files from project root recursively
 targetF = []
@@ -32,7 +37,7 @@ for root, subdirs, files in os.walk(os.path.join(os.curdir, 'files')):
 
 # Output a log file from the merge process
 if errCnt == 0:
-    logMsg = "Process executed at: {}\n\nFiles imported:\n".format(str(dt.datetime.now()).split('.')[0]) + validFiles + "\nNumber of files imported = {}\n\nImport successful!".format(validCnt)
+    logMsg = "***** ===== Copyright belongs to ducdh-dev ===== *****\n\nProcess executed at: {}\n\nFiles imported:\n".format(str(dt.datetime.now()).split('.')[0]) + validFiles + "\nNumber of files imported = {}\n\nImport successful!".format(validCnt)
     log_file = open('log.txt', 'w')
 elif errCnt > 0:
     logMsg = "Process executed at: {}\n\nFiles imported:\n".format(str(dt.datetime.now()).split('.')[0]) + validFiles + "{} file(s) imported.\n\nWarning!!! Some files were in use during the time of import.".format(validCnt) \
@@ -42,11 +47,12 @@ elif errCnt > 0:
     print("\n{} file(s) imported.\nWarning!!! {} file(s) in use during runtime:\n".format(validCnt, errCnt) + \
           errFiles + "There may have been changes to the affected files.")
 
+logMsg += "\n\n***** ===== Copyright belongs to ducdh-dev ===== *****"
 log_file.write(logMsg)
 log_file.close()
 
 # Load all .xlsx to dataframes and concatenate into master dataframe
-dataframes = [pd.read_excel(t, skiprows=15) for t in targetF]
+dataframes = [pd.read_excel(t, skiprows=skiprows) for t in targetF]
 df_master = pd.concat(dataframes)
 
 # Exports a consolidated excel file 
@@ -63,5 +69,4 @@ if os.path.exists('master_table.xlsx'):
         open('log.txt', 'w').write(errMsg)
 else:
     df_master.to_excel('master_table.xlsx', index = False)
-    print("\nMerge complete!")
-            
+    print("Merge complete!")
