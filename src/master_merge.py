@@ -24,7 +24,7 @@ for root, subdirs, files in os.walk(os.path.join(os.curdir, 'files')):
     for f in files:
         if f.endswith('.xlsx') and not (f == "master_table.xlsx" or f == "~$master_table.xlsx"):
             try:
-                checkfile = open(os.path.join(root, f))
+                checkfile = open(os.path.join(root, f), encoding="utf-8")
                 checkfile.close()
                 validCnt += 1
                 print("  " + os.path.join(root, f))
@@ -38,12 +38,12 @@ for root, subdirs, files in os.walk(os.path.join(os.curdir, 'files')):
 # Output a log file from the merge process
 if errCnt == 0:
     logMsg = "***** ===== Copyright belongs to ducdh-dev ===== *****\n\nProcess executed at: {}\n\nFiles imported:\n".format(str(dt.datetime.now()).split('.')[0]) + validFiles + "\nNumber of files imported = {}\n\nImport successful!".format(validCnt)
-    log_file = open('log.txt', 'w')
+    log_file = open('log.txt', 'w', encoding="utf-8")
 elif errCnt > 0:
     logMsg = "Process executed at: {}\n\nFiles imported:\n".format(str(dt.datetime.now()).split('.')[0]) + validFiles + "{} file(s) imported.\n\nWarning!!! Some files were in use during the time of import.".format(validCnt) \
     + "\nRun the script again in case there are changes from the affected files.\n\n{} file(s) affected:\n".format(errCnt) \
     + errFiles
-    log_file = open('log.txt', 'w')
+    log_file = open('log.txt', 'w', encoding="utf-8")
     print("\n{} file(s) imported.\nWarning!!! {} file(s) in use during runtime:\n".format(validCnt, errCnt) + \
           errFiles + "There may have been changes to the affected files.")
 
